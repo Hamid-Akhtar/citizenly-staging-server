@@ -142,6 +142,6 @@ app.use(function (req, res, next) {
 
 
 // Start server
-const localPort = process.env.port || 4242;
+const localPort = process.env.PORT || 80;
 const server = require('http').createServer(app);
 server.listen(localPort, () => console.log(`Node server listening on port ${localPort}!`));
