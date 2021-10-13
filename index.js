@@ -91,7 +91,7 @@ app.use(cors());
 const bodyParser = require('body-parser')
 
 // Stripe
-const stripe = require('stripe')("pk_test_51JiIxSBZhITimpA4I3g9ENUKPpXkG29jLxyzbr0CtvJPgVZgmKv5vhz5RGB1BvKEdKmmsPlMuok6X6Eij0f3twB600rI803N1K");
+const stripe = require('stripe')("sk_test_51JiIxSBZhITimpA42ygKR1vDsDfb4jigeP1xLrmRLuANNkhR4LIvKxF7lyqogJ6gyEu2VADkfGEbYssSCD7MwWfn00TImIY5Vy");
 const StripeResource = require('stripe').StripeResource;
 
 // unique ID's
