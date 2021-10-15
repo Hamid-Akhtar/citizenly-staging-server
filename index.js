@@ -63,7 +63,8 @@ const RepresentativeApplication = sequelize.define('representative_requests', {
     allowNull: false
   },
   divisions: {
-    type: DataTypes.JSON
+    type: DataTypes.JSON,
+    allowNull: false
   },
   divisionId: {
     type: DataTypes.STRING,
@@ -302,10 +303,14 @@ app.get('/representatives', async (req, res) => {
           const repre = r.toJSON();
           let officialIndex = data.officials.push(repre.official) - 1;
           let officeIndex = data.offices.push(repre.office) - 1;
-          if(data.divisions[repre.divisionId] && data.divisions[repre.divisionId].officeIndices){
+          if(data.divisions[repre.divisionId]){
+            if(!data.divisions[repre.divisionId].officeIndices){
+              data.divisions[repre.divisionId].officeIndices = [];
+            }
             data.divisions[repre.divisionId].officeIndices.push(officeIndex);
             data.offices[officeIndex].officialIndices = [officialIndex];
           }
+
         }
       });
       res.json(data);
