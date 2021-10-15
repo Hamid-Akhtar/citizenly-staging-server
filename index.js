@@ -5,6 +5,7 @@ const multer  = require('multer');
 const http = require('http');
 const url = require('url') ;
 const path = require("path");
+const session = require("express-session");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -18,9 +19,8 @@ const storage = multer.diskStorage({
 const upload = multer({ dest: 'images/', storage });
 const env = require('dotenv').config({ path: resolve(__dirname, '../../.env') });
 const cors = require('cors');
-const passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
-// ejs
+const passport = require('passport');
+
 const ejs = require('ejs');
 
 // Connect to Database
@@ -46,7 +46,7 @@ const User = sequelize.define('representatives', {
     type: DataTypes.STRING,
     allowNull: false
   },
-  passport: {
+  password: {
     type: DataTypes.STRING,
     allowNull: false
   }
@@ -77,26 +77,25 @@ const RepresentativeApplication = sequelize.define('representative_requests', {
   }
 }, { updatedAt: false, createdAt: false, initialAutoIncrement: false });
 
-passport.use(new LocalStrategy(
-  function (username, password, done) {
-    User.findOne({ username: username }, function (err, user) {
-      if (err) { return done(err); }
-      if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
-      }
-      if (!user.validPassword(password)) {
-        return done(null, false, { message: 'Incorrect password.' });
-      }
-      return done(null, user);
-    });
-  }
-));
-
 // Express
 const express = require('express');
 const app = express();
 app.use(cors());
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+
+require("./passport")(app, passport);
+
+const auth = () => {
+  return (req, res, next) => {
+      passport.authenticate('local', (error, user, info) => {
+          if(error) res.status(401).json({"statusCode" : 401 ,"message" : error});
+          req.login(user, function(error) {
+              if (error) return next(error);
+              next();
+          });
+      })(req, res, next);
+  }
+}
 
 // Stripe
 const stripe = require('stripe')("sk_test_51JiIxSBZhITimpA42ygKR1vDsDfb4jigeP1xLrmRLuANNkhR4LIvKxF7lyqogJ6gyEu2VADkfGEbYssSCD7MwWfn00TImIY5Vy");
@@ -124,6 +123,7 @@ const verificationSession = new VerificationSession(stripe);
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
+app.use(express.urlencoded({ extended: true }));
 app.use(
   express.json({
     // We need the raw body to verify webhook signatures.
@@ -136,16 +136,16 @@ app.use(
     }
   })
 );
+app.use(session({secret: "secret"}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(bodyParser.json());
 
-app.post('/login',
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true
-  })
-);
+app.post('/authenticate', auth() , (req, res) => {
+  res.status(200).json({"statusCode" : 200 ,"message" : "hello"});
+});
 
 const respondToClient = (error, responseData, res) => {
   if (error) {
@@ -248,7 +248,6 @@ app.post("/upload_image", upload.single('photo'), async (req, res)=>{
 app.get('/representatives', async (req, res) => {
   try {
     const { searchTerm } = req.query;
-    console.log(searchTerm);
     const apiKey = "AIzaSyCIYSUFOcFWiji_MrkceTn2ahh6L4eaxJ4";
     const url = `https://www.googleapis.com/civicinfo/v2/representatives?key=${apiKey}&address=${searchTerm.toLowerCase()}`;
     const resp = await Representative.findOne({
@@ -260,6 +259,7 @@ app.get('/representatives', async (req, res) => {
         }
       }
     });
+    /*
     if (resp) {
       let divisionsData = resp.response;
       const keysOfDiv = Object.keys(divisionsData.divisions);
@@ -286,10 +286,11 @@ app.get('/representatives', async (req, res) => {
       res.json({ ...divisionsData })
     }
     else {
+      */
       const responseFromCivic = await axios.get(url);
       let data = responseFromCivic.data;
       const keysOfDiv = Object.keys(data.divisions);
-      await Representative.create({ searchTerm: searchTerm.toLowerCase(), id: searchTerm.toLowerCase(), response: data });
+//      await Representative.create({ searchTerm: searchTerm.toLowerCase(), id: searchTerm.toLowerCase(), response: data });
       const rep = await RepresentativeApplication.findAll({
         where: {
           divisionId: {
@@ -309,7 +310,7 @@ app.get('/representatives', async (req, res) => {
         }
       });
       res.json(data);
-    }
+    //}
   }
   catch (err) {
     console.log(err);
