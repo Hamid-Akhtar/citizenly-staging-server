@@ -63,8 +63,7 @@ const RepresentativeApplication = sequelize.define('representative_requests', {
     allowNull: false
   },
   divisions: {
-    type: DataTypes.JSON,
-    allowNull: false
+    type: DataTypes.JSON
   },
   divisionId: {
     type: DataTypes.STRING,
