@@ -79,6 +79,11 @@ const RepresentativeApplication = sequelize.define('representative_requests', {
     allowNull: true,
     defaultValue: 0
   },
+  deleted:{
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    defaultValue: 0
+  },
   id: {
     type: DataTypes.STRING,
     allowNull: false,
