@@ -70,10 +70,23 @@ const RepresentativeApplication = sequelize.define('representative_requests', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  searchTerm: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  verified: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    defaultValue: 0
+  },
   id: {
     type: DataTypes.STRING,
     allowNull: false,
     primaryKey: true
+  },
+  searchTerm: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
 }, { updatedAt: false, createdAt: false, initialAutoIncrement: false });
 
@@ -88,6 +101,7 @@ require("./passport")(app, passport);
 const auth = () => {
   return (req, res, next) => {
       passport.authenticate('local', (error, user, info) => {
+          if(!user) res.status(400).json({"statusCode" : 400 ,"message" : "Username not provided."});
           if(error) res.status(401).json({"statusCode" : 401 ,"message" : error});
           req.login(user, function(error) {
               if (error) return next(error);
@@ -95,6 +109,13 @@ const auth = () => {
           });
       })(req, res, next);
   }
+}
+
+const isLoggedIn = (req, res, next) => {
+  if(req.isAuthenticated()){
+      return next()
+  }
+  return res.status(400).json({"statusCode" : 400, "message" : "not authenticated"})
 }
 
 // Stripe
@@ -147,6 +168,10 @@ app.post('/authenticate', auth() , (req, res) => {
   res.status(200).json({"statusCode" : 200 ,"message" : "hello"});
 });
 
+app.get('/valid', isLoggedIn , (req, res) => {
+  res.status(200).json({"statusCode" : 200 ,"message" : "hello"});
+});
+
 const respondToClient = (error, responseData, res) => {
   if (error) {
     console.error('\nError:\n', error.raw);
@@ -168,9 +193,75 @@ const respondToClient = (error, responseData, res) => {
  * Handler for adding new representatives requests for admin to verify/deny
  */
 app.post('/add-new-rep', async (req, res) => {
+  console.log(req.body);
   try {
     await RepresentativeApplication.create({...req.body, id : uuid()});
     res.status(200).json({message: "Successful Submitted Your Application"});
+  }
+  catch (err) {
+    console.log(err);
+    res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+  }
+});
+
+/**
+ * Handler for updating representatives(only accessible by admin)
+ */
+ app.put('/update-rep/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    let rep = await RepresentativeApplication.findOne({id});
+    await rep.update({...req.body});
+    res.status(200).json({message: "Successful Updated Your Application"});
+  }
+  catch (err) {
+    console.log(err);
+    res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+  }
+});
+
+/**
+ * Handler for getting representatives
+ */
+app.get('/get-reps', async (req, res)=>{
+  try {
+    const { searchTerm, status } = req.query;
+    let rep;
+    if(searchTerm){
+      rep = await RepresentativeApplication.findAll({
+        where:{
+           searchTerm
+        }
+      });
+    }
+    else if(status){
+      rep = await RepresentativeApplication.findAll({
+        where:{
+           verified: parseInt(status)
+        }
+      });
+    }
+    else {
+      rep = await RepresentativeApplication.findAll();
+      
+    }
+    res.status(200).json({reps: rep});
+  }
+  catch (err) {
+    console.log(err);
+    res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+  }
+});
+
+/**
+ * Handler for deleting representatives
+ */
+app.delete('/delete-rep/:id', async (req, res)=>{
+  try {
+    const { id } = req.params;
+    let rep = await RepresentativeApplication.findByPk(id);
+    rep.destroy();
+    res.status(200).json({message: "Successfully removed representative with id:" + id});
   }
   catch (err) {
     console.log(err);
