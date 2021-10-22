@@ -215,7 +215,7 @@ app.post('/add-new-rep', async (req, res) => {
  app.put('/update-rep/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    let rep = await RepresentativeApplication.findOne({id});
+    let rep = await RepresentativeApplication.findByPk(id);
     await rep.update({...req.body});
     res.status(200).json({message: "Successful Updated Your Application"});
   }
@@ -232,23 +232,18 @@ app.get('/get-reps', async (req, res)=>{
   try {
     const { searchTerm, status } = req.query;
     let rep;
-    if(searchTerm){
+    let filterTerm = {};
+
+    if(searchTerm) filterTerm['searchTerm'] = searchTerm;
+    if(status) filterTerm['verified'] = parseInt(status);
+    
+    if(!searchTerm && !status) rep = await RepresentativeApplication.findAll();
+    else{
       rep = await RepresentativeApplication.findAll({
         where:{
-           searchTerm
+           ...filterTerm
         }
       });
-    }
-    else if(status){
-      rep = await RepresentativeApplication.findAll({
-        where:{
-           verified: parseInt(status)
-        }
-      });
-    }
-    else {
-      rep = await RepresentativeApplication.findAll();
-      
     }
     res.status(200).json({reps: rep});
   }
