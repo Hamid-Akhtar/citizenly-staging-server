@@ -386,7 +386,8 @@ app.get('/representatives', async (req, res) => {
         where: {
           divisionId: {
             [Op.in]: keysOfDiv
-          }
+          },
+          verified: 2
         }   
       });
       rep.map(r=>{
