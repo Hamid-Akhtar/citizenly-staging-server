@@ -23,6 +23,7 @@ const passport = require('passport');
 
 const ejs = require('ejs');
 
+
 // Connect to Database
 // Sequelize
 const sequelize = new Sequelize('mysql://xsean02:WasimAnwar$123123@ozoqodb.cfukutb1nbox.us-west-1.rds.amazonaws.com:3306/citizenly');
@@ -92,6 +93,23 @@ const RepresentativeApplication = sequelize.define('representative_requests', {
   searchTerm: {
     type: DataTypes.STRING,
     allowNull: false
+  }
+}, { updatedAt: false, createdAt: false, initialAutoIncrement: false });
+
+const Position =  sequelize.define('positions', {
+  id: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    primaryKey: true
+  },
+  name : {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+  subFields : {
+    type : DataTypes.JSON,
+    allowNull : true
   }
 }, { updatedAt: false, createdAt: false, initialAutoIncrement: false });
 
@@ -193,6 +211,53 @@ const respondToClient = (error, responseData, res) => {
     }
   }
 };
+
+
+/**
+ * Handler for adding new position for office
+ */
+app.post('/add-new-position', async (req, res)=> {
+  try{
+    const { name, subFields } = req.body;
+    const position = await Position.findOne({where : { name : name }});
+    if(position !== null){
+         await position.update({subFields : subFields});
+    }
+    else {
+      await Position.create({name: name, subFields : subFields, id : uuid()});
+    }
+    res.status(200).json({message: "Successfully Added Your Position."});
+  }
+  catch (err) {
+    console.log(err);
+    res.status(400).json({ error: "Something went wrong, unable to add positions!" });
+  }
+});
+
+app.put('/update-position/:id', async (req, res)=> {
+  try{
+    const { subFields } = req.body;
+    const { id } = req.params;
+    let pos = await RepresentativeApplication.findOne({id});
+    pos.update({subFields});
+    res.status(200).json({message: "Successfully Added Your Position."});
+  }
+  catch (err) {
+    console.log(err);
+    res.status(400).json({ error: "Something went wrong, unable to add positions!" });
+  }
+});
+
+app.get('/get-positions', async (req, res)=> {
+  try{
+    const positions = await Position.findAll();
+    res.status(200).json({message: "Successfully Fetched All Positions.", positions});
+  }
+  catch (err) {
+    console.log(err);
+    res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+  }
+});
 
 /**
  * Handler for adding new representatives requests for admin to verify/deny
@@ -391,7 +456,8 @@ app.get('/representatives', async (req, res) => {
         where: {
           divisionId: {
             [Op.in]: keysOfDiv
-          }
+          },
+          verified : 2
         }   
       });
       rep.map(r=>{
@@ -406,7 +472,6 @@ app.get('/representatives', async (req, res) => {
             data.divisions[repre.divisionId].officeIndices.push(officeIndex);
             data.offices[officeIndex].officialIndices = [officialIndex];
           }
-
         }
       });
       res.json(data);
