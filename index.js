@@ -116,7 +116,7 @@ const Position =  sequelize.define('positions', {
 // Express
 const express = require('express');
 const app = express();
-app.use(cors({origin: "http://localhost:4200",credentials: true }));
+app.use(cors());
 const bodyParser = require('body-parser');
 
 require("./passport")(app, passport);
@@ -138,7 +138,7 @@ const isLoggedIn = (req, res, next) => {
   if(req.isAuthenticated()){
       return next()
   }
-  return res.status(400).json({"statusCode" : 400, "message" : "not authenticated"})
+  return res.status(401).json({"statusCode" : 401, "message" : "not authenticated"})
 }
 
 // Stripe
