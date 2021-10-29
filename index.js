@@ -234,6 +234,24 @@ app.post('/add-new-position', async (req, res)=> {
   }
 });
 
+app.delete('/del-position/:id', async (req, res)=>{
+  try{
+    const { id } = req.params;
+    const position = await Position.findOne({where : { id: id }});
+    if(position !== null){
+         await position.destroy();
+    }
+    else {
+      res.status(404).json({message: "Position not found!"});
+    }
+    res.status(200).json({message: "Successfully Deleted Your Position."});
+  }
+  catch (err) {
+    console.log(err);
+    res.status(400).json({ error: "Something went wrong, unable to add positions!" });
+  }
+});
+
 app.put('/update-position/:id', async (req, res)=> {
   try{
     const { subFields } = req.body;
