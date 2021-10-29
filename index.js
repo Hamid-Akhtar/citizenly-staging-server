@@ -116,7 +116,7 @@ const Position =  sequelize.define('positions', {
 // Express
 const express = require('express');
 const app = express();
-app.use(cors({origin: '*',credentials: true }));
+app.use(cors({credentials: true }));
 const bodyParser = require('body-parser');
 
 require("./passport")(app, passport);
