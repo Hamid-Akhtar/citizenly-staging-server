@@ -141,6 +141,14 @@ const isLoggedIn = (req, res, next) => {
   return res.status(401).json({"statusCode" : 401, "message" : "not authenticated"})
 }
 
+passport.serializeUser(function(user, done) {
+  if(user) done(null, user);
+});
+
+passport.deserializeUser(function(id, done) {
+  done(null, id);
+});
+
 // Stripe
 const stripe = require('stripe')("sk_test_51JiIxSBZhITimpA42ygKR1vDsDfb4jigeP1xLrmRLuANNkhR4LIvKxF7lyqogJ6gyEu2VADkfGEbYssSCD7MwWfn00TImIY5Vy");
 const StripeResource = require('stripe').StripeResource;
