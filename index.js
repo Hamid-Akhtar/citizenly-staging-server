@@ -119,6 +119,15 @@ const app = express();
 app.use(cors());
 const bodyParser = require('body-parser');
 
+
+passport.serializeUser(function(user, done) {
+  if(user) done(null, user);
+});
+
+passport.deserializeUser(function(id, done) {
+  done(null, id);
+});
+
 require("./passport")(app, passport);
 
 const auth = () => {
@@ -140,14 +149,6 @@ const isLoggedIn = (req, res, next) => {
   }
   return res.status(401).json({"statusCode" : 401, "message" : "not authenticated"})
 }
-
-passport.serializeUser(function(user, done) {
-  if(user) done(null, user);
-});
-
-passport.deserializeUser(function(id, done) {
-  done(null, id);
-});
 
 // Stripe
 const stripe = require('stripe')("sk_test_51JiIxSBZhITimpA42ygKR1vDsDfb4jigeP1xLrmRLuANNkhR4LIvKxF7lyqogJ6gyEu2VADkfGEbYssSCD7MwWfn00TImIY5Vy");
@@ -174,7 +175,7 @@ const verificationSession = new VerificationSession(stripe);
  */
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-
+app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   express.json({
@@ -193,7 +194,6 @@ app.use(session({secret: "secret"}));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(bodyParser.json());
 
 app.post('/authenticate', auth() , (req, res) => {
   res.status(200).json({"statusCode" : 200 ,"message" : "hello"});
