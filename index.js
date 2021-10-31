@@ -119,15 +119,6 @@ const app = express();
 app.use(cors());
 const bodyParser = require('body-parser');
 
-
-passport.serializeUser(function(user, done) {
-  if(user) done(null, user);
-});
-
-passport.deserializeUser(function(id, done) {
-  done(null, id);
-});
-
 require("./passport")(app, passport);
 
 const auth = () => {
@@ -175,7 +166,7 @@ const verificationSession = new VerificationSession(stripe);
  */
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.use(bodyParser.json());
+
 app.use(express.urlencoded({ extended: true }));
 app.use(
   express.json({
@@ -190,10 +181,10 @@ app.use(
   })
 );
 app.use(session({secret: "secret"}));
+app.use(bodyParser.json());
 
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 app.post('/authenticate', auth() , (req, res) => {
   res.status(200).json({"statusCode" : 200 ,"message" : "hello"});
@@ -220,6 +211,10 @@ const respondToClient = (error, responseData, res) => {
   }
 };
 
+/*
+ * Handle static assets and other pages
+ */
+app.use(express.static('./images'));
 
 /**
  * Handler for adding new position for office
@@ -235,24 +230,6 @@ app.post('/add-new-position', async (req, res)=> {
       await Position.create({name: name, subFields : subFields, id : uuid()});
     }
     res.status(200).json({message: "Successfully Added Your Position."});
-  }
-  catch (err) {
-    console.log(err);
-    res.status(400).json({ error: "Something went wrong, unable to add positions!" });
-  }
-});
-
-app.delete('/del-position/:id', async (req, res)=>{
-  try{
-    const { id } = req.params;
-    const position = await Position.findOne({where : { id: id }});
-    if(position !== null){
-         await position.destroy();
-    }
-    else {
-      res.status(404).json({message: "Position not found!"});
-    }
-    res.status(200).json({message: "Successfully Deleted Your Position."});
   }
   catch (err) {
     console.log(err);
@@ -505,10 +482,7 @@ app.get('/representatives', async (req, res) => {
 });
 
 
-/*
- * Handle static assets and other pages
- */
-app.use(express.static('./images'));
+
 
 
 
