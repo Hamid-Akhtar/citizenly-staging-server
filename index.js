@@ -268,7 +268,7 @@ app.get('/get-positions', async (req, res)=> {
  app.delete('/del-position/:id', async (req, res)=>{
   try {
     const { id } = req.params;
-    let pos = await RepresentativeApplication.findOne({id});
+    let pos = await Position.findOne({id});
     pos.destroy();
     res.status(200).json({message: "Successfully removed position with id:" + id});
   }
