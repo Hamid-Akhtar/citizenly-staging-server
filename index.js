@@ -263,6 +263,22 @@ app.get('/get-positions', async (req, res)=> {
 });
 
 /**
+ * Handler for deleting representatives
+ */
+ app.delete('/del-position/:id', async (req, res)=>{
+  try {
+    const { id } = req.params;
+    let pos = await RepresentativeApplication.findOne({id});
+    pos.destroy();
+    res.status(200).json({message: "Successfully removed position with id:" + id});
+  }
+  catch (err) {
+    console.log(err);
+    res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+  }
+});
+
+/**
  * Handler for adding new representatives requests for admin to verify/deny
  */
 app.post('/add-new-rep', async (req, res) => {
