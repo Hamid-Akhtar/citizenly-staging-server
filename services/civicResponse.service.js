@@ -1,5 +1,6 @@
 const { default: axios } = require('axios');
 const { RepresentativeApplication } = require("../models/index");
+const { Sequelize, DataTypes, Op } = require('sequelize');
 
 module.exports = async (req, res) => {
     try {
