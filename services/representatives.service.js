@@ -7,7 +7,7 @@ module.exports = {
     addRep : async (req, res) => {
         try {
           if(req.body.divisionId){
-             const ocd = await OcdTemplate.findOne({name : req.body.divisionId});
+             const ocd = await OcdTemplate.findOne({where : {name : req.body.divisionId }});
              if(!ocd) await OcdTemplate.create({name : req.body.divisionId, id : uuid()});
           }
           await RepresentativeApplication.create({...req.body, id : uuid()});
