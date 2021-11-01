@@ -7,7 +7,8 @@ module.exports = {
     addRep : async (req, res) => {
         try {
           if(req.body.divisionId){
-             await OcdTemplate.create({name : req.body.divisionId, id : uuid()});
+             const ocd = await OcdTemplate.findOne({name : req.body.divisionId});
+             if(ocd) await OcdTemplate.create({name : req.body.divisionId, id : uuid()});
           }
           await RepresentativeApplication.create({...req.body, id : uuid()});
           res.status(200).json({message: "Successful Submitted Your Application"});
