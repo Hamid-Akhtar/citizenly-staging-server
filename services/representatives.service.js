@@ -8,7 +8,7 @@ module.exports = {
         try {
           if(req.body.divisionId){
              const ocd = await OcdTemplate.findOne({name : req.body.divisionId});
-             if(ocd) await OcdTemplate.create({name : req.body.divisionId, id : uuid()});
+             if(!ocd) await OcdTemplate.create({name : req.body.divisionId, id : uuid()});
           }
           await RepresentativeApplication.create({...req.body, id : uuid()});
           res.status(200).json({message: "Successful Submitted Your Application"});
