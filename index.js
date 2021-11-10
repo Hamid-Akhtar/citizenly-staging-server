@@ -7,6 +7,7 @@ const civicResponse = require("./services/civicResponse.service");
 const { addRep, updateRep, getReps, delRep } = require("./services/representatives.service");
 const { addPos, updatePos, deletePos, getPositions } = require("./services/positions.service");
 const { getOcds } = require("./services/ocdTemplates.service");
+const jwt = require('jsonwebtoken');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -45,23 +46,33 @@ app.use(cors());
 require("./passport")(app, passport);
 
 const auth = () => {
-  return (req, res, next) => {
-      passport.authenticate('local', (error, user, info) => {
-          if(!user) res.status(400).json({"statusCode" : 400 ,"message" : "Username not provided."});
-          if(error) res.status(401).json({"statusCode" : 401 ,"message" : error});
-          req.login(user, function(error) {
-              if (error) return next(error);
-              next();
-          });
-      })(req, res, next);
-  }
-}
-
-const isLoggedIn = (req, res, next) => {
-  if(req.isAuthenticated()){
-      return next()
-  }
-  return res.status(401).json({"statusCode" : 401, "message" : "not authenticated"})
+  return async (req, res, next) => {
+      passport.authenticate(
+        'login',
+        async (err, user, info) => {
+          try {
+            if (err) {
+              return res.status(400).json({statusCode : 400, message : err});
+            }
+  
+            req.login(
+              user,
+              { session: false },
+              async (error) => {
+                if (error) return next(error);
+  
+                const body = { _id: user._id, email: user.email };
+                const token = jwt.sign({ user: body }, "TOP_SECRET");
+  
+                return res.json({ token });
+              }
+            );
+          } catch (error) {
+              return res.status(500).json({statusCode : 500, message : err});
+          }
+        }
+      )(req, res, next);
+    }
 }
 
 // Stripe
@@ -97,7 +108,6 @@ app.use(
     verify: function (req, res, buf) {
       if (req.originalUrl.startsWith('/webhook')) {
         req.rawBody = buf.toString();
-        console.log(req.rawBody);
       }
     }
   })
@@ -112,7 +122,7 @@ app.post('/authenticate', auth() , (req, res) => {
   res.status(200).json({"statusCode" : 200 ,"message" : "hello"});
 });
 
-app.get('/valid', isLoggedIn , (req, res) => {
+app.get('/valid', passport.authenticate('jwt', { session: false }) , (req, res) => {
   res.status(200).json({"statusCode" : 200 ,"message" : "hello"});
 });
 
@@ -141,38 +151,38 @@ app.use(express.static('./images'));
 /**
  * Handler for adding new position for office
  */
-app.post('/add-new-position', addPos);
+app.post('/add-new-position', passport.authenticate('jwt', { session: false }), addPos);
 
-app.put('/update-position/:id', updatePos);
+app.put('/update-position/:id', passport.authenticate('jwt', { session: false }), updatePos);
 
-app.get('/get-positions', getPositions);
+app.get('/get-positions', passport.authenticate('jwt', { session: false }), getPositions);
 
 /**
  * Handler for deleting representatives
  */
- app.delete('/del-position/:id', deletePos);
+ app.delete('/del-position/:id', passport.authenticate('jwt', { session: false }), deletePos);
 
 /**
  * Handler for adding new representatives requests for admin to verify/deny
  */
-app.post('/add-new-rep', addRep);
+app.post('/add-new-rep', passport.authenticate('jwt', { session: false }), addRep);
 
 /**
  * Handler for updating representatives(only accessible by admin)
  */
- app.put('/update-rep/:id',updateRep);
+ app.put('/update-rep/:id', passport.authenticate('jwt', { session: false }), updateRep);
 
 /**
  * Handler for getting representatives
  */
-app.get('/get-reps', getReps);
+app.get('/get-reps', passport.authenticate('jwt', { session: false }), getReps);
 
 /**
  * Handler for deleting representatives
  */
-app.delete('/delete-rep/:id', delRep);
+app.delete('/delete-rep/:id', passport.authenticate('jwt', { session: false }), delRep);
 
-app.get('/get-ocds', getOcds);
+app.get('/get-ocds', passport.authenticate('jwt', { session: false }), getOcds);
 
 //
 /*
