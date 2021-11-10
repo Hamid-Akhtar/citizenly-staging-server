@@ -2,7 +2,8 @@ const  LocalStrategy  =  require('passport-local').Strategy;
 const JWTstrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 
-
+const secret = process.env.SECRET_JWT;
+console.log(secret, process.env.MYSQL_URL, "secret")
 module.exports = (app, passport) => {
     passport.use(
         'login', new LocalStrategy(
@@ -18,7 +19,7 @@ module.exports = (app, passport) => {
     passport.use(
         new JWTstrategy(
           {
-            secretOrKey: 'TOP_SECRET',
+            secretOrKey: secret,
             jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken()
           },
           async (token, done) => {
