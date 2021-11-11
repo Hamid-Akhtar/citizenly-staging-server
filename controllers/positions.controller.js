@@ -16,7 +16,6 @@ module.exports = {
           res.status(200).json({message: "Successfully Added Your Position."});
         }
         catch (err) {
-          console.log(err);
           res.status(400).json({ error: "Something went wrong, unable to add positions!" });
         }
       },
@@ -29,7 +28,6 @@ module.exports = {
           res.status(200).json({message: "Successfully Added Your Position."});
         }
         catch (err) {
-          console.log(err);
           res.status(400).json({ error: "Something went wrong, unable to add positions!" });
         }
       },
@@ -39,7 +37,6 @@ module.exports = {
           res.status(200).json({message: "Successfully Fetched All Positions.", positions});
         }
         catch (err) {
-          console.log(err);
           res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
         }
       },
@@ -51,7 +48,6 @@ module.exports = {
           res.status(200).json({message: "Successfully removed position with id:" + id});
         }
         catch (err) {
-          console.log(err);
           res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
         }
       }

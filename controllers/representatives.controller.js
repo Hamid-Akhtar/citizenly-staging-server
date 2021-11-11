@@ -14,7 +14,6 @@ module.exports = {
           res.status(200).json({message: "Successful Submitted Your Application"});
         }
         catch (err) {
-          console.log(err);
           res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
         }
       },
@@ -26,7 +25,6 @@ module.exports = {
             res.status(200).json({message: "Successful Updated Your Application"});
         }
         catch (err) {
-            console.log(err);
             res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
         }
     },
@@ -50,7 +48,6 @@ module.exports = {
           res.status(200).json({reps: rep});
         }
         catch (err) {
-          console.log(err);
           res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
         }
       },
@@ -62,7 +59,6 @@ module.exports = {
           res.status(200).json({message: "Successfully removed representative with id:" + id});
         }
         catch (err) {
-          console.log(err);
           res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
         }
       }

@@ -8,7 +8,6 @@ module.exports = {
           res.status(200).json({message: "Successful Fetched Ocd Templates", ocds});
         }
         catch (err) {
-          console.log(err);
           res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
         }
     }

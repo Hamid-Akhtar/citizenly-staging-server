@@ -1,6 +1,6 @@
 const { default: axios } = require('axios');
 const { RepresentativeApplication } = require("../models/index");
-const { Sequelize, DataTypes, Op } = require('sequelize');
+const { Op } = require('sequelize');
 
 module.exports = async (req, res) => {
     try {
@@ -52,7 +52,7 @@ module.exports = async (req, res) => {
             divisionId: {
               [Op.in]: keysOfDiv
             },
-            verified : 2
+            verified : 2 // This means only return `representatives` that are approved by admin
           }   
         });
         rep.map(r=>{
@@ -72,7 +72,6 @@ module.exports = async (req, res) => {
         res.json(data);
     }
     catch (err) {
-      console.log(err);
       res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
     }
   }

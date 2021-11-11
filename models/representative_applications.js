@@ -1,5 +1,5 @@
-const { Sequelize, DataTypes, Op } = require('sequelize');
-const sequelize = new Sequelize(process.env.MYSQL_URL);
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequalize');
 const RepresentativeApplication = sequelize.define('representative_requests', {
     // Model attributes are defined here
     official: {

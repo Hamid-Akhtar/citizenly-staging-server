@@ -1,12 +1,12 @@
-const env = require('dotenv').config();
-const { Sequelize, DataTypes, Op } = require('sequelize');
+require('dotenv').config();
 const multer  = require('multer');
+const sequelize = require("./models/sequalize");
 const path = require("path");
 const session = require("express-session");
-const civicResponse = require("./services/civicResponse.service");
-const { addRep, updateRep, getReps, delRep } = require("./services/representatives.service");
-const { addPos, updatePos, deletePos, getPositions } = require("./services/positions.service");
-const { getOcds } = require("./services/ocdTemplates.service");
+const civicResponse = require("./controllers/civicResponse.controller");
+const { addRep, updateRep, getReps, delRep } = require("./controllers/representatives.controller");
+const { addPos, updatePos, deletePos, getPositions } = require("./controllers/positions.controller");
+const { getOcds } = require("./controllers/ocdTemplates.controller");
 const jwt = require('jsonwebtoken');
 
 const storage = multer.diskStorage({
@@ -22,7 +22,7 @@ const upload = multer({ dest: 'images/', storage });
 const cors = require('cors');
 const passport = require('passport');
 
-const sequelize = new Sequelize(process.env.MYSQL_URL);
+
 //const sequelize = new Sequelize('mysql://root@localhost:3306/citizenly');
 /*
 const Representative = sequelize.define('representatives_response', {
@@ -76,11 +76,12 @@ const auth = () => {
 }
 
 // Stripe
-const stripe = require('stripe')("sk_test_51JiIxSBZhITimpA42ygKR1vDsDfb4jigeP1xLrmRLuANNkhR4LIvKxF7lyqogJ6gyEu2VADkfGEbYssSCD7MwWfn00TImIY5Vy");
+const stripe = require('stripe')(process.env.STRIPE_KEY);
 const StripeResource = require('stripe').StripeResource;
 
 // unique ID's
 const { uuid } = require('uuidv4');
+const sequelize = require('./models/sequalize');
 
 const VerificationSession = StripeResource.extend({
   create: StripeResource.method({

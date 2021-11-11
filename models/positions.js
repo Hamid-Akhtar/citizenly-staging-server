@@ -1,6 +1,6 @@
   
-const { Sequelize, DataTypes, Op } = require('sequelize');
-const sequelize = new Sequelize(process.env.MYSQL_URL);
+const { DataTypes } = require('sequelize');
+const sequelize = require('./sequalize');
 const Position =  sequelize.define('positions', {
     id: {
       type: DataTypes.STRING,

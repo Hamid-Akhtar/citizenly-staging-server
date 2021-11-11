@@ -1,14 +1,12 @@
-const  LocalStrategy  =  require('passport-local').Strategy;
+const LocalStrategy  =  require('passport-local').Strategy;
 const JWTstrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 
-const secret = process.env.SECRET_JWT;
-console.log(secret, process.env.MYSQL_URL, "secret")
 module.exports = (app, passport) => {
     passport.use(
         'login', new LocalStrategy(
         (username, password, done) => {
-                if(username === "admin" && password === "admin"){
+                if(username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD){
                     return done(null, username);
                 } else {
                     return done("Unauthorized Access", false);
@@ -19,7 +17,7 @@ module.exports = (app, passport) => {
     passport.use(
         new JWTstrategy(
           {
-            secretOrKey: secret,
+            secretOrKey: process.env.SECRET_JWT,
             jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken()
           },
           async (token, done) => {
