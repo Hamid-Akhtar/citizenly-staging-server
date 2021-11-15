@@ -71,7 +71,7 @@ module.exports = (app, passport, express) => {
       res.status(200).json({"statusCode" : 200 ,"message" : "hello"});
     });
     
-    app.get('/valid', passport.authenticate('jwt', { session: false }) , (req, res) => {
+    app.get('/valid' , (req, res) => {
       res.status(200).json({"statusCode" : 200 ,"message" : "hello"});
     });
     
@@ -83,16 +83,16 @@ module.exports = (app, passport, express) => {
     /**
      * Handler for adding new position for office
      */
-    app.post('/add-new-position', passport.authenticate('jwt', { session: false }), addPos);
+    app.post('/add-new-position', addPos);
     
-    app.put('/update-position/:id', passport.authenticate('jwt', { session: false }), updatePos);
+    app.put('/update-position/:id', updatePos);
     
-    app.get('/get-positions', passport.authenticate('jwt', { session: false }), getPositions);
+    app.get('/get-positions', getPositions);
     
     /**
      * Handler for deleting representatives
      */
-     app.delete('/del-position/:id', passport.authenticate('jwt', { session: false }), deletePos);
+     app.delete('/del-position/:id', deletePos);
     
     /**
      * Handler for adding new representatives requests for admin to verify/deny
@@ -102,19 +102,19 @@ module.exports = (app, passport, express) => {
     /**
      * Handler for updating representatives(only accessible by admin)
      */
-     app.put('/update-rep/:id', passport.authenticate('jwt', { session: false }), updateRep);
+     app.put('/update-rep/:id', updateRep);
     
     /**
      * Handler for getting representatives
      */
-    app.get('/get-reps', passport.authenticate('jwt', { session: false }), getReps);
+    app.get('/get-reps', getReps);
     
     /**
      * Handler for deleting representatives
      */
-    app.delete('/delete-rep/:id', passport.authenticate('jwt', { session: false }), delRep);
+    app.delete('/delete-rep/:id', delRep);
     
-    app.get('/get-ocds', passport.authenticate('jwt', { session: false }), getOcds);
+    app.get('/get-ocds', getOcds);
     
     app.post("/upload_image", upload.single('photo'), async (req, res)=>{
       var hostname = req.headers.host; 
