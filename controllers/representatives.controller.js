@@ -21,7 +21,7 @@ module.exports = {
         try {
             const { id } = req.params;
             let rep = await RepresentativeApplication.findOne({where:{id: id}});
-            if(rep) await rep.update({...req.body});
+            if(rep) await rep.update({...req.body, updatedAt : new Date().toISOString().slice(0, 19).replace('T', ' ')});
             res.status(200).json({message: "Successful Updated Your Application"});
         }
         catch (err) {
