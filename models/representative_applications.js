@@ -41,6 +41,6 @@ const RepresentativeApplication = sequelize.define('representative_requests', {
       type: DataTypes.STRING,
       allowNull: false
     }
-  }, { updatedAt: false, createdAt: false, initialAutoIncrement: false });
+  }, { updatedAt: true, createdAt: true, initialAutoIncrement: false });
 
   module.exports = { RepresentativeApplication };

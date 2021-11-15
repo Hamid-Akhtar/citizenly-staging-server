@@ -10,7 +10,7 @@ module.exports = {
              const ocd = await OcdTemplate.findOne({where : {name : req.body.divisionId }});
              if(!ocd) await OcdTemplate.create({name : req.body.divisionId, id : uuid()});
           }
-          await RepresentativeApplication.create({...req.body, id : uuid()});
+          await RepresentativeApplication.create({...req.body, id : uuid(), createdAt : new Date().toISOString().slice(0, 19).replace('T', ' '), updatedAt : new Date().toISOString().slice(0, 19).replace('T', ' ')});
           res.status(200).json({message: "Successful Submitted Your Application"});
         }
         catch (err) {
