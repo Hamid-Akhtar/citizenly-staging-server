@@ -6,7 +6,7 @@ module.exports = (app, passport) => {
     passport.use(
         'login', new LocalStrategy(
         (username, password, done) => {
-                if(username === process.env.ADMIN_USERNAME && password === process.env.ADMIN_PASSWORD){
+                if(username === "admin" && password === admin){
                     return done(null, username);
                 } else {
                     return done("Unauthorized Access", false);
