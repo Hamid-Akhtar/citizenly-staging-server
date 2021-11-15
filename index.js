@@ -9,8 +9,6 @@ const express = require('express');
 const app = express();
 app.use(cors());
 
-require("./passport")(app, passport);
-
 /*
  * Express middleware
 app.engine('html', require('ejs').renderFile);

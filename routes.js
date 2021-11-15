@@ -66,7 +66,7 @@ module.exports = (app, passport, express) => {
     
     app.use(passport.initialize());
     app.use(passport.session());
-    
+    require("./passport")(app, passport);
     app.post('/authenticate', auth() , (req, res) => {
       res.status(200).json({"statusCode" : 200 ,"message" : "hello"});
     });
@@ -97,7 +97,7 @@ module.exports = (app, passport, express) => {
     /**
      * Handler for adding new representatives requests for admin to verify/deny
      */
-    app.post('/add-new-rep', passport.authenticate('jwt', { session: false }), addRep);
+    app.post('/add-new-rep', addRep);
     
     /**
      * Handler for updating representatives(only accessible by admin)

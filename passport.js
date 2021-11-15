@@ -24,6 +24,7 @@ module.exports = (app, passport) => {
             try {
               return done(null, token.user);
             } catch (error) {
+              console.log(error);
               done(error);
             }
           }
