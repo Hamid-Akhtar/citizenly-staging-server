@@ -19,35 +19,7 @@ const storage = multer.diskStorage({
 const upload = multer({ dest: 'images/', storage });
 
 module.exports = (app, passport, express) => {
-    const auth = () => {
-        return async (req, res, next) => {
-            passport.authenticate(
-              'login',
-              async (err, user, info) => {
-                try {
-                  if (err) {
-                    return res.status(400).json({statusCode : 400, message : err});
-                  }
-        
-                  req.login(
-                    user,
-                    { session: false },
-                    async (error) => {
-                      if (error) return next(error);
-        
-                      const body = { _id: user._id, email: user.email };
-                      const token = jwt.sign({ user: body }, "TOP_SECRET");
-        
-                      return res.json({ token });
-                    }
-                  );
-                } catch (error) {
-                    return res.status(500).json({statusCode : 500, message : err});
-                }
-              }
-            )(req, res, next);
-          }
-      }
+  const auth = require("./controllers/authenticate.controller");
 
     app.use(express.urlencoded({ extended: true }));
     app.use(
@@ -67,7 +39,7 @@ module.exports = (app, passport, express) => {
     app.use(passport.initialize());
     app.use(passport.session());
     require("./passport")(app, passport);
-    app.post('/authenticate', auth() , (req, res) => {
+    app.post('/authenticate', auth(passport), (req, res) => {
       res.status(200).json({"statusCode" : 200 ,"message" : "hello"});
     });
     

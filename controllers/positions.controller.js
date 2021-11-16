@@ -3,6 +3,7 @@ const { Position } = require("../models/index");
 const { uuid } = require('uuidv4');
 
 module.exports = {
+    /** Add Position */
     addPos: async (req, res)=> {
         try{
           const { name, subFields } = req.body;
