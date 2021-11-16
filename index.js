@@ -7,7 +7,24 @@ const passport = require('passport');
 // Express
 const express = require('express');
 const app = express();
-app.use(cors());
+
+const allowlist = ['http://citizenreps.s3-website-us-east-1.amazonaws.com', 'http://citizenlyadmin.s3-website-us-east-1.amazonaws.com'];
+const corsOptionsDelegate = (req, callback) => {
+  let corsOptions;
+
+  let isDomainAllowed = allowlist.indexOf(req.header('Origin')) !== -1;
+
+  if (isDomainAllowed) {
+    // Enable CORS for this request
+    corsOptions = { origin: true }
+  } else {
+    // Disable CORS for this request
+    corsOptions = { origin: false }
+  }
+  callback(null, corsOptions)
+}
+
+app.use(cors(corsOptionsDelegate));
 
 /*
  * Express middleware
