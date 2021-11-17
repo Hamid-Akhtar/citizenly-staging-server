@@ -6,7 +6,6 @@ const civicResponse = require("./controllers/civicResponse.controller");
 const { addRep, updateRep, getReps, delRep } = require("./controllers/representatives.controller");
 const { addPos, updatePos, deletePos, getPositions } = require("./controllers/positions.controller");
 const { getOcds } = require("./controllers/ocdTemplates.controller");
-const jwt = require('jsonwebtoken');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -39,55 +38,34 @@ module.exports = (app, passport, express) => {
     app.use(passport.initialize());
     app.use(passport.session());
     require("./passport")(app, passport);
-    app.post('/authenticate', auth(passport), (req, res) => {
-      res.status(200).json({"statusCode" : 200 ,"message" : "hello"});
-    });
     
     app.get('/valid' , (req, res) => {
       res.status(200).json({"statusCode" : 200 ,"message" : "hello"});
     });
     
-    /*
-     * Handle static assets and other pages
-     */
     app.use(express.static('./images'));
     
-    /**
-     * Handler for adding new position for office
-     */
-    app.post('/add-new-position', addPos);
+    app.post('/authenticate', auth(passport), (req, res) => {
+      res.status(200).json({"statusCode" : 200 ,"message" : "Logged In Successfully!"});
+    });
     
-    app.put('/update-position/:id', updatePos);
+    app.post('/add-new-position', passport.authenticate('jwt', { session: false }),addPos);
     
-    app.get('/get-positions', getPositions);
+    app.get('/get-positions', passport.authenticate('jwt', { session: false }),getPositions);
     
-    /**
-     * Handler for deleting representatives
-     */
-     app.delete('/del-position/:id', deletePos);
-    
-    /**
-     * Handler for adding new representatives requests for admin to verify/deny
-     */
+    app.delete('/del-position/:id', passport.authenticate('jwt', { session: false }),deletePos);
+
     app.post('/add-new-rep', addRep);
+
+    app.put('/update-rep/:id', passport.authenticate('jwt', { session: false }),updateRep);
+
+    app.get('/get-reps', passport.authenticate('jwt', { session: false }), getReps);
     
-    /**
-     * Handler for updating representatives(only accessible by admin)
-     */
-     app.put('/update-rep/:id', updateRep);
+    app.delete('/delete-rep/:id', passport.authenticate('jwt', { session: false }),delRep);
     
-    /**
-     * Handler for getting representatives
-     */
-    app.get('/get-reps', getReps);
+    app.get('/get-ocds', passport.authenticate('jwt', { session: false }),getOcds);
     
-    /**
-     * Handler for deleting representatives
-     */
-    app.delete('/delete-rep/:id', delRep);
-    
-    app.get('/get-ocds', getOcds);
-    
+
     app.post("/upload_image", upload.single('photo'), async (req, res)=>{
       var hostname = req.headers.host; 
       const uri = `http://${hostname}/${req.file.filename}`;

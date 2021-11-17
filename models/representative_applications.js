@@ -1,7 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequalize');
 const RepresentativeApplication = sequelize.define('representative_requests', {
-    // Model attributes are defined here
     official: {
       type: DataTypes.JSON,
       allowNull: false
