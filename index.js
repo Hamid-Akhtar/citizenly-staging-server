@@ -12,7 +12,7 @@ const allowlist = ['http://citizenreps.s3-website-us-east-1.amazonaws.com', 'htt
 const corsOptionsDelegate = (req, callback) => {
   let corsOptions;
 
-  let isDomainAllowed = allowlist.indexOf(req.header('Origin')) !== -1;
+  const isDomainAllowed = allowlist.indexOf(req.header('Origin')) !== -1;
 
   if (isDomainAllowed) {
     // Enable CORS for this request
@@ -25,12 +25,6 @@ const corsOptionsDelegate = (req, callback) => {
 }
 
 app.use(cors(corsOptionsDelegate));
-
-/*
- * Express middleware
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
-*/
 require("./routes")(app, passport, express);
 
 // Start server
