@@ -8,7 +8,7 @@ const passport = require('passport');
 const express = require('express');
 const app = express();
 
-const allowlist = ['http://citizenreps.s3-website-us-east-1.amazonaws.com', 'http://citizenlyadmin.s3-website-us-east-1.amazonaws.com'];
+const allowlist = ['http://citizenreps.s3-website-us-east-1.amazonaws.com', 'http://citizenlyadmin.s3-website-us-east-1.amazonaws.com', 'http://citizenlyui.s3-website-us-east-1.amazonaws.com'];
 const corsOptionsDelegate = (req, callback) => {
   let corsOptions;
 
