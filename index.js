@@ -25,7 +25,7 @@ const corsOptionsDelegate = (req, callback) => {
   callback(null, corsOptions)
 }
 
-app.use(cors());
+app.use(cors(corsOptionsDelegate));
 require("./routes")(app, passport, express);
 
 // Start server
