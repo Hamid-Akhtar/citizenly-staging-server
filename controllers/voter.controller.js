@@ -12,9 +12,6 @@ module.exports = {
               LAST_NAME : {
                 [Op.like] : `%${provided_details.lastName}%`
               },
-              RES_ADDRESS_1 : {
-                [Op.like] : `%${provided_details.line1}%`
-              },
               CITY : {
                 [Op.like] : `%${provided_details.city}`
               },
