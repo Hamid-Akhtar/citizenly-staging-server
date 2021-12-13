@@ -16,7 +16,8 @@ module.exports = {
           res.status(200).json({message: "Successful Submitted Your Application"});
         }
         catch (err) {
-          res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+          console.log(err);
+          res.status(500).json({ error: "Something went wrong, unable to fetch results!" });
         }
       },
     updateRep: async (req, res) => {
@@ -27,7 +28,7 @@ module.exports = {
             res.status(200).json({message: "Successful Updated Your Application"});
         }
         catch (err) {
-            res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+            res.status(500).json({ error: "Something went wrong, unable to fetch results!" });
         }
     },
     getReps: async (req, res)=>{
@@ -50,7 +51,7 @@ module.exports = {
           res.status(200).json({reps: rep});
         }
         catch (err) {
-          res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+          res.status(500).json({ error: "Something went wrong, unable to fetch results!" });
         }
       },
     delRep: async (req, res)=>{
@@ -61,7 +62,7 @@ module.exports = {
           res.status(200).json({message: "Successfully removed representative with id:" + id});
         }
         catch (err) {
-          res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+          res.status(500).json({ error: "Something went wrong, unable to fetch results!" });
         }
       }
 }

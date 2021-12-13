@@ -1,5 +1,6 @@
 require('dotenv').config();
 const sequelize = require("./models/sequalize");
+const sequelize2 = require("./models/sequelize2");
 
 const cors = require('cors');
 const passport = require('passport');
@@ -24,7 +25,7 @@ const corsOptionsDelegate = (req, callback) => {
   callback(null, corsOptions)
 }
 
-app.use(cors(corsOptionsDelegate));
+app.use(cors());
 require("./routes")(app, passport, express);
 
 // Start server
@@ -33,6 +34,7 @@ const server = require('http').createServer(app);
 server.listen(localPort, async () => {
   try {
     await sequelize.authenticate();
+    await sequelize2.authenticate();
     console.log('Connection has been established successfully.');
     console.log(`Node server listening on port ${localPort}!`);
   }

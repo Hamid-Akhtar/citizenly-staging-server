@@ -35,7 +35,8 @@ module.exports = async (req, res) => {
       res.json(data);
     }
     catch (err) {
-      res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+      console.log(err);
+      res.status(500).json({ error: "Something went wrong, unable to fetch results!" });
     }
 }
 

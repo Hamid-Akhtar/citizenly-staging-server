@@ -18,4 +18,4 @@ const Position =  sequelize.define('positions', {
     }
   }, { updatedAt: false, createdAt: false, initialAutoIncrement: false });
 
-  module.exports = { Position };
+module.exports = { Position };
