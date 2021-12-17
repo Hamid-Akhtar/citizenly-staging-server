@@ -13,7 +13,8 @@ const allowlist = ['http://citizenreps.s3-website-us-east-1.amazonaws.com',
                    'http://www.citizenly.com',
                    'http://citizenlyadmin.s3-website-us-east-1.amazonaws.com', 
                    'http://citizenlyui.s3-website-us-east-1.amazonaws.com',
-                    'https://dev.citizenopolis.com'
+                    'https://dev.citizenopolis.com',
+                    'http://dev.citizenopolis.com'
                   ];
 const corsOptionsDelegate = (req, callback) => {
   let corsOptions;
