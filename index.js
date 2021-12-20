@@ -14,7 +14,8 @@ const allowlist = ['http://citizenreps.s3-website-us-east-1.amazonaws.com',
                    'http://citizenlyadmin.s3-website-us-east-1.amazonaws.com', 
                    'http://citizenlyui.s3-website-us-east-1.amazonaws.com',
                     'https://dev.citizenopolis.com',
-                    'http://dev.citizenopolis.com'
+                    'http://dev.citizenopolis.com',
+                    'http://citizenly.com.s3-website-us-east-1.amazonaws.com'
                   ];
 const corsOptionsDelegate = (req, callback) => {
   let corsOptions;
@@ -31,7 +32,7 @@ const corsOptionsDelegate = (req, callback) => {
   callback(null, corsOptions)
 }
 
-app.use(cors());
+app.use(cors(corsOptionsDelegate));
 require("./routes")(app, passport, express);
 
 // Start server
