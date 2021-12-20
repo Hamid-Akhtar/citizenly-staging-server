@@ -11,6 +11,7 @@ const app = express();
 
 const allowlist = ['http://citizenreps.s3-website-us-east-1.amazonaws.com', 
                    'http://www.citizenly.com',
+                   'http://citizenly.com',
                    'http://citizenlyadmin.s3-website-us-east-1.amazonaws.com', 
                    'http://citizenlyui.s3-website-us-east-1.amazonaws.com',
                     'https://dev.citizenopolis.com',
