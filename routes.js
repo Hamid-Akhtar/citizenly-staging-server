@@ -41,7 +41,7 @@ module.exports = (app, passport, express) => {
     app.use(passport.session());
     require("./passport")(app, passport);
     
-    app.get('/valid' , (req, res) => {
+    app.get('/valid', auth(passport), (req, res) => {
       res.status(200).json({"statusCode" : 200 ,"message" : "hello"});
     });
     
