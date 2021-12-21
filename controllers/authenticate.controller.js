@@ -8,7 +8,7 @@ module.exports = (passport) => {
           async (err, user, info) => {
             try {
               if (err) {
-                return res.status(400).json({statusCode : 400, message : err});
+                return res.status(400).json({statusCode : 401, message : err});
               }
     
               req.login(
