@@ -8,6 +8,7 @@ const { addPos, deletePos, getPositions } = require("./controllers/positions.con
 const { getOcds } = require("./controllers/ocdTemplates.controller");
 const { addMember } = require("./controllers/earlyMember.controller");
 const { fetchVoterData } = require("./controllers/voter.controller");
+const { addContact, getContacts } = require("./controllers/contact.controller");
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -70,6 +71,10 @@ module.exports = (app, passport, express) => {
     app.get('/fetch-voter', fetchVoterData);
     
     app.post('/early-member', addMember);
+
+    app.post('/contact-us', addContact);
+    
+    app.get('/contact-us', getContacts);
 
     app.post("/upload_image", upload.single('photo'), async (req, res)=>{
       var hostname = req.headers.host; 
