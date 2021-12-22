@@ -12,5 +12,14 @@ module.exports = {
         catch (err) {
           res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
         }
-    }
+    },
+    getMembers : async (req, res) => {
+      try {
+        const members = await EarlyMember.findAll();
+        res.status(200).json({message: "Successful Fetched All Members", members});
+      }
+      catch (err) {
+        res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+      }
+  }
 }

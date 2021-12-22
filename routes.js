@@ -6,7 +6,7 @@ const civicResponse = require("./controllers/civicResponse.controller");
 const { addRep, updateRep, getReps, delRep } = require("./controllers/representatives.controller");
 const { addPos, deletePos, getPositions } = require("./controllers/positions.controller");
 const { getOcds } = require("./controllers/ocdTemplates.controller");
-const { addMember } = require("./controllers/earlyMember.controller");
+const { addMember, getMembers } = require("./controllers/earlyMember.controller");
 const { fetchVoterData } = require("./controllers/voter.controller");
 const { addContact, getContacts } = require("./controllers/contact.controller");
 
@@ -71,6 +71,8 @@ module.exports = (app, passport, express) => {
     app.get('/fetch-voter', fetchVoterData);
     
     app.post('/early-member', addMember);
+
+    app.get('/early-member', getMembers);
 
     app.post('/contact-us', addContact);
     
