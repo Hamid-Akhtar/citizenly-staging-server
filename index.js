@@ -1,5 +1,6 @@
 require('dotenv').config();
 const sequelize = require("./models/sequalize");
+const sequelize2 = require("./models/sequelize2");
 
 const cors = require('cors');
 const passport = require('passport');
@@ -8,7 +9,13 @@ const passport = require('passport');
 const express = require('express');
 const app = express();
 
-const allowlist = ['http://citizenreps.s3-website-us-east-1.amazonaws.com', 'http://citizenlyadmin.s3-website-us-east-1.amazonaws.com', 'http://citizenlyui.s3-website-us-east-1.amazonaws.com'];
+const allowlist = ['http://citizenreps.s3-website-us-east-1.amazonaws.com', 
+                   'http://www.citizenly.com',
+                   'http://citizenlyadmin.s3-website-us-east-1.amazonaws.com', 
+                   'http://citizenlyui.s3-website-us-east-1.amazonaws.com',
+                    'https://dev.citizenopolis.com',
+                    'http://dev.citizenopolis.com'
+                  ];
 const corsOptionsDelegate = (req, callback) => {
   let corsOptions;
 
@@ -33,6 +40,7 @@ const server = require('http').createServer(app);
 server.listen(localPort, async () => {
   try {
     await sequelize.authenticate();
+    await sequelize2.authenticate();
     console.log('Connection has been established successfully.');
     console.log(`Node server listening on port ${localPort}!`);
   }

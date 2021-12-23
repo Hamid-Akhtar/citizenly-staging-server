@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize('citizenly', 'xsean02', 'WasimAnwar$123123', {
+const sequelize2 = new Sequelize('ods_db', 'xsean02', 'WasimAnwar$123123', {
     host: 'ozoqodb.cfukutb1nbox.us-west-1.rds.amazonaws.com',
     port: 3306,
     dialect: "mysql",
@@ -15,6 +15,6 @@ const sequelize = new Sequelize('citizenly', 'xsean02', 'WasimAnwar$123123', {
         connectTimeout: 60000
       }
 });
-sequelize.sync();
-module.exports = sequelize;
+sequelize2.sync();
+module.exports = sequelize2;
 

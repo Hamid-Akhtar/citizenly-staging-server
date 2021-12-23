@@ -4,8 +4,10 @@ const multer  = require('multer');
 const session = require("express-session");
 const civicResponse = require("./controllers/civicResponse.controller");
 const { addRep, updateRep, getReps, delRep } = require("./controllers/representatives.controller");
-const { addPos, updatePos, deletePos, getPositions } = require("./controllers/positions.controller");
+const { addPos, deletePos, getPositions } = require("./controllers/positions.controller");
 const { getOcds } = require("./controllers/ocdTemplates.controller");
+const { addMember } = require("./controllers/earlyMember.controller");
+const { fetchVoterData } = require("./controllers/voter.controller");
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -64,7 +66,10 @@ module.exports = (app, passport, express) => {
     app.delete('/delete-rep/:id', passport.authenticate('jwt', { session: false }),delRep);
     
     app.get('/get-ocds', passport.authenticate('jwt', { session: false }),getOcds);
+
+    app.get('/fetch-voter', fetchVoterData);
     
+    app.post('/early-member', addMember);
 
     app.post("/upload_image", upload.single('photo'), async (req, res)=>{
       var hostname = req.headers.host; 
