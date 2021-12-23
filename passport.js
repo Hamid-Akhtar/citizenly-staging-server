@@ -6,7 +6,7 @@ module.exports = (app, passport) => {
     passport.use(
         'login', new LocalStrategy(
         (username, password, done) => {
-                if(username === "admin" && password === "admin"){
+                if(username === "chris.knotz@citizenly.com" && password === "clTi.1616#"){
                     return done(null, username);
                 } else {
                     return done("Unauthorized Access", false);
