@@ -23,7 +23,7 @@ module.exports = {
         }
         catch (err) {
           console.log(err);
-          res.status(400).json({ error: "Something went wrong, unable to fetch results!", voter: null});
+          res.status(500).json({ error: "Something went wrong, unable to fetch results!", voter: null});
         }
     }
 }

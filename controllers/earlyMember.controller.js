@@ -10,7 +10,7 @@ module.exports = {
           res.status(200).json({message: "Successful Added Member", member});
         }
         catch (err) {
-          res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+          res.status(500).json({ error: "Something went wrong, unable to fetch results!" });
         }
     },
     getMembers : async (req, res) => {
@@ -19,7 +19,8 @@ module.exports = {
         res.status(200).json({message: "Successful Fetched All Members", members});
       }
       catch (err) {
-        res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+        console.log(err);
+        res.status(500).json({ error: "Something went wrong, unable to fetch results!" });
       }
     },
     archiveMember : async (req, res) => {
@@ -29,7 +30,7 @@ module.exports = {
         res.status(200).json({message: "Successful Archived Member", member});
       }
       catch (err) {
-        res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+        res.status(500).json({ error: "Something went wrong, unable to fetch results!" });
       }
     }
 }

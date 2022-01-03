@@ -17,7 +17,7 @@ module.exports = {
           res.status(200).json({message: "Successfully Added Your Position."});
         }
         catch (err) {
-          res.status(400).json({ error: "Something went wrong, unable to add positions!" });
+          res.status(500).json({ error: "Something went wrong, unable to add positions!" });
         }
       },
     updatePos: async (req, res)=> {
@@ -29,7 +29,7 @@ module.exports = {
           res.status(200).json({message: "Successfully Added Your Position."});
         }
         catch (err) {
-          res.status(400).json({ error: "Something went wrong, unable to add positions!" });
+          res.status(500).json({ error: "Something went wrong, unable to add positions!" });
         }
       },
     getPositions: async (req, res)=> {
@@ -38,7 +38,7 @@ module.exports = {
           res.status(200).json({message: "Successfully Fetched All Positions.", positions});
         }
         catch (err) {
-          res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+          res.status(500).json({ error: "Something went wrong, unable to fetch results!" });
         }
       },
     deletePos: async (req, res)=>{
@@ -49,7 +49,7 @@ module.exports = {
           res.status(200).json({message: "Successfully removed position with id:" + id});
         }
         catch (err) {
-          res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+          res.status(500).json({ error: "Something went wrong, unable to fetch results!" });
         }
       }
 }
