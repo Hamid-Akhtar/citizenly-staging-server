@@ -44,6 +44,11 @@ const EarlyMember = sequelize.define('early_members', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    archived: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+    }
 }, { updatedAt: false, createdAt: false, initialAutoIncrement: false });
 
 module.exports = { EarlyMember };

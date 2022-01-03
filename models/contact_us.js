@@ -26,6 +26,11 @@ const ContactUs = sequelize.define('contact_us', {
     message: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    archived: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
     }
 }, { updatedAt: false, createdAt: false, initialAutoIncrement: false });
 
