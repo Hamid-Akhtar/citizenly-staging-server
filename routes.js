@@ -6,9 +6,9 @@ const civicResponse = require("./controllers/civicResponse.controller");
 const { addRep, updateRep, getReps, delRep } = require("./controllers/representatives.controller");
 const { addPos, deletePos, getPositions } = require("./controllers/positions.controller");
 const { getOcds } = require("./controllers/ocdTemplates.controller");
-const { addMember, getMembers } = require("./controllers/earlyMember.controller");
+const { addMember, getMembers, archiveMember } = require("./controllers/earlyMember.controller");
 const { fetchVoterData } = require("./controllers/voter.controller");
-const { addContact, getContacts } = require("./controllers/contact.controller");
+const { addContact, getContacts, archiveContact } = require("./controllers/contact.controller");
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -72,9 +72,13 @@ module.exports = (app, passport, express) => {
     
     app.post('/early-member', addMember);
 
+    app.put('/early-member/:id', archiveMember);
+
     app.get('/early-member', getMembers);
 
     app.post('/contact-us', addContact);
+
+    app.put('/contact-us/:id', archiveContact);
     
     app.get('/contact-us', getContacts);
 

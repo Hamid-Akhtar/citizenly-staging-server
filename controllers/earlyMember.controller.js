@@ -21,5 +21,15 @@ module.exports = {
       catch (err) {
         res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
       }
-  }
+    },
+    archiveMember : async (req, res) => {
+      try {
+        const { id } = req.params;
+        const member = await (await EarlyMember.findOne({where : {id : id}})).update({archived : req.body.archived});
+        res.status(200).json({message: "Successful Archived Member", member});
+      }
+      catch (err) {
+        res.status(400).json({ error: "Something went wrong, unable to fetch results!" });
+      }
+    }
 }
