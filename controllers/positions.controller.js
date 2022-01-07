@@ -6,13 +6,13 @@ module.exports = {
     /** Add New Position */
     addPos: async (req, res)=> {
         try{
-          const { name, subFields } = req.body;
+          const { name, section, category } = req.body;
           const position = await Position.findOne({where : { name : name }});
           if(position !== null){
-               await position.update({subFields : subFields});
+               await position.update({section : section, category : category});
           }
           else {
-            await Position.create({name: name, subFields : subFields, id : uuid()});
+            await Position.create({name: name, section : section, category : category, id : uuid()});
           }
           res.status(200).json({message: "Successfully Added Your Position."});
         }
