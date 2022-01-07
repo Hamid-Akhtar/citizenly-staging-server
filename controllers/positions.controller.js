@@ -6,6 +6,7 @@ module.exports = {
     /** Add New Position */
     addPos: async (req, res)=> {
         try{
+          res.status(401).json({message: "Something went wrong! blah blah!"});
           const { name, section, category } = req.body;
           const position = await Position.findOne({where : { name : name }});
           if(position !== null){
@@ -17,6 +18,7 @@ module.exports = {
           res.status(200).json({message: "Successfully Added Your Position."});
         }
         catch (err) {
+          console.log(err);
           res.status(500).json({ error: "Something went wrong, unable to add positions!" });
         }
       },
@@ -29,6 +31,7 @@ module.exports = {
           res.status(200).json({message: "Successfully Added Your Position."});
         }
         catch (err) {
+          console.log(err);
           res.status(500).json({ error: "Something went wrong, unable to add positions!" });
         }
       },
