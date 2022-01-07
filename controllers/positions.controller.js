@@ -6,7 +6,6 @@ module.exports = {
     /** Add New Position */
     addPos: async (req, res)=> {
         try{
-          res.status(401).json({message: "Something went wrong! blah blah!"});
           const { name, section, category } = req.body;
           const position = await Position.findOne({where : { name : name }});
           if(position !== null){
