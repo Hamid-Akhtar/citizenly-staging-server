@@ -12,9 +12,13 @@ const Position =  sequelize.define('positions', {
       allowNull: false,
       unique: true
     },
-    subFields : {
-      type : DataTypes.JSON,
-      allowNull : true
+    section : {
+      type : DataTypes.STRING,
+      allowNull: false
+    },
+    category: {
+      type : DataTypes.STRING,
+      allowNull : false
     }
   }, { updatedAt: false, createdAt: false, initialAutoIncrement: false });
 
