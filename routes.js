@@ -54,7 +54,7 @@ module.exports = (app, passport, express) => {
     
     app.post('/add-new-position', passport.authenticate('jwt', { session: false }),addPos);
     
-    app.get('/get-positions', passport.authenticate('jwt', { session: false }),getPositions);
+    app.get('/get-positions', getPositions);
     
     app.delete('/del-position/:id', passport.authenticate('jwt', { session: false }),deletePos);
 
