@@ -46,7 +46,7 @@ module.exports = {
     deletePos: async (req, res)=>{
         try {
           const { id } = req.params;
-          let pos = await Position.findOne({id});
+          let pos = await Position.findOne({where:{id}});
           pos.destroy();
           res.status(200).json({message: "Successfully removed position with id:" + id});
         }
