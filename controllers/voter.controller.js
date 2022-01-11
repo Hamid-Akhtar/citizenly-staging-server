@@ -12,11 +12,8 @@ module.exports = {
               LAST_NAME : {
                 [Op.like] : `%${provided_details.lastName}%`
               },
-              CITY : {
-                [Op.like] : `%${provided_details.city}`
-              },
               BIRTH_DATE : provided_details.birthYear, 
-              ZIP_CODE : provided_details.zip
+              HOUSE_NUM : provided_details.houseNo
           }});
           if(voter) res.status(200).json({message: "Successful Fetched Voter Data", voter});
           else res.status(404).json({message: "Can't find any voter matching the provided details.", voter: null});
