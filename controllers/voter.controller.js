@@ -13,7 +13,7 @@ module.exports = {
                 [Op.like] : `%${provided_details.lastName}%`
               },
               BIRTH_DATE : provided_details.birthYear, 
-              HOUSE_NUM : provided_details.houseNo
+              HOUSE_NUM : provided_details.houseNo + ".0"
           }});
           if(voter) res.status(200).json({message: "Successful Fetched Voter Data", voter});
           else res.status(404).json({message: "Can't find any voter matching the provided details.", voter: null});
