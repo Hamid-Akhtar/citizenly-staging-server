@@ -20,6 +20,12 @@ const EarlyMember = sequelize.define('early_members', {
         allowNull: false,
         unique: true
     },
+    line1: {
+        type: DataTypes.STRING
+    },
+    line2: {
+        type: DataTypes.STRING
+    },
     houseNo: {
         type: DataTypes.STRING,
         allowNull: false
