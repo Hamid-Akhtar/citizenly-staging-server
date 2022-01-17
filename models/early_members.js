@@ -27,20 +27,16 @@ const EarlyMember = sequelize.define('early_members', {
         type: DataTypes.STRING
     },
     houseNo: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING
     },
     streetName: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING
     },
     streetType: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING
     },
     direction: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING
     },
     aptNo: {
         type: DataTypes.STRING,
@@ -49,12 +45,10 @@ const EarlyMember = sequelize.define('early_members', {
         type: DataTypes.STRING
     },
     state: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING
     },
     zip: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING
     },
     archived: {
         type: DataTypes.BOOLEAN,
