@@ -30,10 +30,6 @@ const RepresentativeApplication = sequelize.define('representative_requests', {
       type: DataTypes.STRING,
       allowNull: false,
       primaryKey: true
-    },
-    searchTerm: {
-      type: DataTypes.STRING,
-      allowNull: false
     }
   }, { updatedAt: true, createdAt: true, initialAutoIncrement: false });
 

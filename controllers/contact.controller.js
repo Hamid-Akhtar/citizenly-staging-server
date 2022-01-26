@@ -25,7 +25,7 @@ module.exports = {
     archiveContact : async (req, res) => {
       try {
         const { id } = req.params;
-        const member = await (await ContactUs.findOne({where : {id : id}})).update({archived : req.body.archived});
+        const member = await (await ContactUs.findOne({where : {id : id}})).destroy();
         res.status(200).json({message: "Successful Archived Member", member});
       }
       catch (err) {

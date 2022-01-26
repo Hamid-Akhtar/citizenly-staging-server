@@ -18,8 +18,10 @@ module.exports = async (req, res) => {
           verified : 2 // This means only return `representatives` that are approved by admin
         }   
       });
+      const repNew = await 
       rep.map(r=>{
         if(r) {
+          console.log(r, "official")
           const repre = r.toJSON();
           let officialIndex = data.officials.push(repre.official) - 1;
           let officeIndex = data.offices.push(repre.office) - 1;

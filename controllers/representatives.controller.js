@@ -1,6 +1,7 @@
 const { RepresentativeApplication, OcdTemplate } = require("../models/index");
 // unique ID's
 const { uuid } = require('uuidv4');
+const { SuggestedOfficial } = require("../models/suggested_official");
 
 module.exports = {
     addRep : async (req, res) => {
@@ -9,6 +10,21 @@ module.exports = {
              const ocd = await OcdTemplate.findOne({where : {name : req.body.divisionId }});
              if(!ocd) await OcdTemplate.create({name : req.body.divisionId, id : uuid()});
           }
+          const official = {
+            ...req.body.official
+          };
+          /*
+          const officeTitle = req.body.office.name;
+          const divisionId = req.body.divisionId;
+          await SuggestedOfficial.create({
+            name_of_official: official.name,
+            office_title: officeTitle,
+            non_partisan: official.nonPartisan,
+            jurisdiction: official.jurisdiction,
+            agency: official.agency,
+            display_party_affiliation: official.displayPoliticalAssociation,
+          })
+          */
           await RepresentativeApplication.create({
             ...req.body, id : uuid(), 
             createdAt : new Date().toISOString().slice(0, 19).replace('T', ' '), 
