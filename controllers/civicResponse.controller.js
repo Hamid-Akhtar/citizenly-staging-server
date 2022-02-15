@@ -23,7 +23,8 @@ module.exports = async (req, res) => {
         where: {
           division_id: {
             [Op.in]: keysOfDiv
-          }
+          },
+          request_status: "ACCEPTED"
         }
       });
       

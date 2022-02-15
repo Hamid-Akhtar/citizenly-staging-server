@@ -1,4 +1,4 @@
-const { RepresentativeApplication, OcdTemplate } = require("../models/index");
+const { OcdTemplate } = require("../models/index");
 // unique ID's
 const { uuid } = require('uuidv4');
 const { SuggestedOfficial } = require("../models/suggested_official");
@@ -29,27 +29,28 @@ module.exports = {
             display_party_affiliation: official.displayPoliticalAssociation,
             political_association: official.party,
             phone_number: official.phones.length ? official.phones[0] : '',
-            email_address: official.emails.length ? official.emails[0] : '',
+            email_address:(official.emails && official.emails.length) ? official.emails[0] : '',
             address_line_1: address.line1,
             address_line_2:address.line2,
             city: address.city,
             state: address.state,
             zip_code: address.zip,
-            website_url: official.urls[0],
+            website_url: (official.urls.length ? official.urls[0] : ''),
             photo_url: official.photoUrl,
-            facebook_url: official.channels[0].id,
-            twitter_url: official.channels[1].id,
-            linked_in_url: official.channels[2].id,
-            instagram_url: official.channels[3].id,
+            facebook_url: (official.channels.length && official.channels[0]) ? official.channels[0].id : '',
+            twitter_url: (official.channels.length && official.channels[1]) ? official.channels[1].id : '',
+            linked_in_url: (official.channels.length && official.channels[2]) ? official.channels[2].id : '',
+            instagram_url: (official.channels.length && official.channels[3]) ? official.channels[3].id : '',
             jurisdiction: official.jurisdiction,
             agency: official.agency,
             division_id: divisionId
           });
-
+/*
           await RepresentativeApplication.create({
             ...req.body, id : uuid(), 
             createdAt : new Date().toISOString().slice(0, 19).replace('T', ' '), 
             updatedAt : new Date().toISOString().slice(0, 19).replace('T', ' ')});
+*/
           res.status(200).json({message: "Successful Submitted Your Application"});
         }
         catch (err) {
@@ -74,12 +75,12 @@ module.exports = {
           let rep;
           let filterTerm = {};
       
-          if(searchTerm) filterTerm['searchTerm'] = searchTerm;
-          if(status) filterTerm['verified'] = parseInt(status);
+          if(status) filterTerm['request_status'] = status;
           
-          if(!searchTerm && !status) rep = await RepresentativeApplication.findAll();
+          if(!searchTerm && !status) rep = await SuggestedOfficial.findAll();
+
           else{
-            rep = await RepresentativeApplication.findAll({
+            rep = await SuggestedOfficial.findAll({
               where:{
                  ...filterTerm
               }
@@ -94,7 +95,7 @@ module.exports = {
     delRep: async (req, res)=>{
         try {
           const { id } = req.params;
-          let rep = await RepresentativeApplication.findByPk(id);
+          let rep = await SuggestedOfficial.findByPk(id);
           rep.destroy();
           res.status(200).json({message: "Successfully removed representative with id:" + id});
         }

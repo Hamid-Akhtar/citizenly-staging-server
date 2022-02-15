@@ -40,6 +40,7 @@ module.exports = {
           res.status(200).json({message: "Successfully Fetched All Positions.", positions});
         }
         catch (err) {
+          console.log(err);
           res.status(500).json({ error: "Something went wrong, unable to fetch results!" });
         }
       },
