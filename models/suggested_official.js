@@ -7,7 +7,7 @@ const SuggestedOfficial = sequelize.define('suggested_official', {
       allowNull: false
     },
     request_status: {
-      type: DataTypes.ENUM(["ACCEPTED", "PENDING", "DECLINED"]),
+      type: DataTypes.ENUM(["ACCEPTED", "PENDING", "DECLINED", "ARCHIVED"]),
       defaultValue: "PENDING"
     },
     office_title: {
@@ -43,6 +43,9 @@ const SuggestedOfficial = sequelize.define('suggested_official', {
     address_line_2: {
         type: DataTypes.STRING
     },
+    photo_url: {
+         type: DataTypes.STRING
+    },
     city: {
         type: DataTypes.STRING
     },
@@ -50,9 +53,6 @@ const SuggestedOfficial = sequelize.define('suggested_official', {
         type: DataTypes.STRING
     },
     zip_code: {
-        type: DataTypes.STRING
-    },
-    website_url: {
         type: DataTypes.STRING
     },
     website_url: {

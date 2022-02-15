@@ -1,6 +1,7 @@
 const { default: axios } = require('axios');
 const { RepresentativeApplication } = require("../models/index");
 const { Op } = require('sequelize');
+const { SuggestedOfficial } = require('../models/suggested_official');
 
 module.exports = async (req, res) => {
     try {
@@ -18,10 +19,56 @@ module.exports = async (req, res) => {
           verified : 2 // This means only return `representatives` that are approved by admin
         }   
       });
-      const repNew = await 
+      const repNew = await SuggestedOfficial.findAll({
+        where: {
+          division_id: {
+            [Op.in]: keysOfDiv
+          }
+        }
+      });
+      
+      repNew.map(r=>{
+        if(r){
+          const rep = r;
+          const official = {
+            name: rep.name_of_official,
+            line1: rep.address_line_1,
+            line2: rep.address_line_2,
+            city: rep.city,
+            state: rep.state,
+            zip: rep.zip_code,
+            party: rep.political_association,
+            phones: [rep.phone_number],
+            urls: [rep.website_url],
+            channels: [
+              {
+                type: "Facebook",
+                id: rep.facebook_url
+              },
+              {
+                type: "Twitter",
+                id: rep.twitter_url
+              }
+            ]
+          };
+          const office = {
+            name: rep.office_title,
+            divisionId: rep.division_id
+          };
+          let officialIndex = data.officials.push(official) - 1;
+          let officeIndex = data.offices.push(office) - 1;
+          if(data.divisions[rep.division_id]){
+            if(!data.divisions[rep.division_id].officeIndices){
+              data.divisions[rep.division_id].officeIndices = [];
+            }
+            data.divisions[rep.division_id].officeIndices.push(officeIndex);
+            data.offices[officeIndex].officialIndices = [officialIndex];
+          }
+        }
+      });
+      /*
       rep.map(r=>{
         if(r) {
-          console.log(r, "official")
           const repre = r.toJSON();
           let officialIndex = data.officials.push(repre.official) - 1;
           let officeIndex = data.offices.push(repre.office) - 1;
@@ -34,6 +81,7 @@ module.exports = async (req, res) => {
           }
         }
       });
+      */
       res.json(data);
     }
     catch (err) {
