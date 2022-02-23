@@ -37,7 +37,7 @@ app.use(cors());
 require("./routes")(app, passport, express);
 
 // Start server
-const localPort = process.env.PORT || 8080;
+const localPort = process.env.PORT || 443;
 const server = require('http').createServer(app);
 server.listen(localPort, async () => {
   try {
