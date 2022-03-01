@@ -1,5 +1,5 @@
 const { default: axios } = require('axios');
-const { RepresentativeApplication } = require("../models/index");
+// const { RepresentativeApplication } = require("../models/index");
 const { Op } = require('sequelize');
 const { SuggestedOfficial } = require('../models/suggested_official');
 
@@ -11,14 +11,14 @@ module.exports = async (req, res) => {
       const responseFromCivic = await axios.get(url);
       let data = responseFromCivic.data;
       const keysOfDiv = Object.keys(data.divisions);
-      const rep = await RepresentativeApplication.findAll({
-        where: {
-          divisionId: {
-            [Op.in]: keysOfDiv
-          },
-          verified : 2 // This means only return `representatives` that are approved by admin
-        }   
-      });
+//       const rep = await RepresentativeApplication.findAll({
+//         where: {
+//           divisionId: {
+//             [Op.in]: keysOfDiv
+//           },
+//           verified : 2 // This means only return `representatives` that are approved by admin
+//         }   
+//       });
       const repNew = await SuggestedOfficial.findAll({
         where: {
           division_id: {
