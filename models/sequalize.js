@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize('citizenly', 'xsean02', 'WasimAnwar$123123', {
-    host: 'ozoqodb.cfukutb1nbox.us-west-1.rds.amazonaws.com',
+const sequelize = new Sequelize('citizenly_staging', 'admin', 'citizenlyadmin', {
+  host: 'database-2.cqmtqmjku4aj.us-east-1.rds.amazonaws.com',
     port: 3306,
     dialect: "mysql",
     operatorsAliases: false,
